@@ -45,6 +45,7 @@ instance AsSVGTag BasicSVG where
   svgTagName Line      = "line"
   svgTagName PolyLine  = "polyline"
   svgTagName Polygon   = "polygon"
+  svgTagName (Other t)  = t
 
 instance AsSVGTag BasicInner where
   svgTagName Animate = "animate"
@@ -64,6 +65,7 @@ data BasicSVG
   | Line
   | PolyLine
   | Polygon
+  | Other Text
   deriving (Show, Eq)
 
 -- | The simplest inner element for a basic shape, the "<animate>" tag.
