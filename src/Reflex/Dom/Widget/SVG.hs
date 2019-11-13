@@ -17,6 +17,8 @@ module Reflex.Dom.Widget.SVG
   , svgBasicDyn_
   , svgElDynAttr'
   , svgElDynAttr_
+  , elDynAttrSVG'
+  , elDynAttrSVG
   ) where
 
 import           Control.Monad.Fix           (MonadFix)
@@ -88,6 +90,30 @@ data SVGEl t m a = SVGEl
 
 svgXMLNamespace :: Text
 svgXMLNamespace = "http://www.w3.org/2000/svg"
+
+-- | Trivial SVG wrapper around 'elDynAttrNS'' with svg namespace
+-- (Elements are sometimes not rendered without it)
+elDynAttrSVG' :: forall t m a.
+  ( DomBuilder t m
+  , PostBuild t m
+  )
+  => Text
+  -> Dynamic t (Map Text Text)
+  -> m a
+  -> m (Element EventResult (DomBuilderSpace m) t, a)
+elDynAttrSVG' = RD.elDynAttrNS' (Just svgXMLNamespace)
+
+-- | Trivial SVG wrapper around 'elDynAttrNS'  with svg namespace
+-- (Elements are sometimes not rendered without it)
+elDynAttrSVG  :: forall t m a.
+  ( DomBuilder t m
+  , PostBuild t m
+  )
+  => Text
+  -> Dynamic t (Map Text Text)
+  -> m a
+  -> m a
+elDynAttrSVG  = RD.elDynAttrNS  (Just svgXMLNamespace)
 
 -- | This is for creating a SVG element with @Dynamic@ attributes, and ensuring we
 -- use the right namespace so the browser actually picks up on it. The name
